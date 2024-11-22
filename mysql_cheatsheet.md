@@ -643,6 +643,12 @@ WHERE YEAR(order_date) = '2023';                -- String functions can be used
 --WHERE YEAR(order_date) = YEAR(CURDATE());
 
 SELECT *
+FROM orders o
+LEFT JOIN customers c
+    ON o.customer_id = c.customer_id
+    AND YEAR(c.order_date) = 2023               -- Filter condition in JOIN to optimize performance
+
+SELECT *
 FROM orders
 WHERE (YEAR(order_date) = '2023'
     AND BINARY country REGEXP BINARY '[I]')
@@ -654,24 +660,19 @@ WHERE YEAR(order_date) = '2023'
     AND (BINARY country REGEXP BINARY '[I]'
         OR country = 'China');                  -- Same filters, but different parenthesis changes filtering criteria
 
-SELECT *
-FROM 
-
 -- Find Year with total orders more than 40
 SELECT *
 FROM orders
 WHERE YEAR(order_date) = '2023'
 AND SUM(units) > 41;                            -- ERROR; you cannot use aggregate functions in WHERE clause
 
--- Method 1
--- Using HAVING clause
+-- Method 1 - Using HAVING clause
 SELECT YEAR(order_date) year, SUM(units) total_units
 FROM orders
 GROUP BY YEAR(order_date)
 HAVING SUM(units) > 40;                         -- HAVING clause is the filter for aggregate functions
 
--- Method 2
--- Using Commmon Table Expressions (CTE)
+-- Method 2 - Using Commmon Table Expressions (CTE)
 WITH data AS (
     SELECT YEAR(order_date) year, SUM(units) total_units
     FROM orders
@@ -681,16 +682,14 @@ SELECT year, total_units
 FROM data
 WHERE total_units > 40;
 
--- Method 3
--- Using Derived Table
+-- Method 3 - Using Derived Table
 SELECT year, total_units
 FROM (SELECT YEAR(order_date) year, SUM(units) total_units
         FROM orders
         GROUP BY YEAR(order_date)) t
 WHERE total_units > 40;
 
--- Method 4
--- Using CTE and Window Function
+-- Method 4 - Using CTE and Window Function
 WITH data AS (
     SELECT DISTINCT YEAR(order_date) year, SUM(units) OVER (PARTITION BY YEAR(order_date)) total_units
     FROM orders
@@ -699,6 +698,7 @@ SELECT year, total_units
 FROM data
 WHERE total_units > 40;
 ```
+<br>
 
 ## AGGREGATE FUNCTIONS
 ```sql

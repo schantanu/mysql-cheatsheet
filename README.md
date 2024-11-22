@@ -4,7 +4,7 @@ This repo has a comprehensive MySQL cheatsheet markdown file that can be convert
 ## Generate Cheatsheet PDF
 - Download/Clone this repository in your local machine
 - Install [Visual Studio Code](https://code.visualstudio.com/)
-- Install [Markdown PDF extension](https://marketplace.visualstudio.com/items?itemName=yzane.markdown-pdf) for VS Code
+- Install [Markdown PDF extension v1.5.0](https://marketplace.visualstudio.com/items?itemName=yzane.markdown-pdf) for VS Code
 - Open the `mysql_cheatsheet.md` file on VS Code.
 - Open up the Command Palette in VS Code by selecting Ctrl/Cmd + Shift + P or View > Command Palette
 - In Command Palette, search and select the option `Markdown PDF: Export(pdf)`
